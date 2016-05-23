@@ -8,6 +8,7 @@ import java.util.ArrayList;
  * Created by Maxim on 5/22/2016.
  */
 public class Roulette {
+    //TODO add event messaging system for roulette events such as got black, got number, got column, etc.
     public enum NumberColor {
         Red(Color.RED),
         Black(Color.BLACK),
@@ -35,7 +36,6 @@ public class Roulette {
 
         /**
          * Returns the number in the list at the given index offset.
-         * Ex: offset = 36, number list size = 15, returns number at list[1]
          * Equivalent to list[size % offset]
          * @param offset the index offset to lookup the number at
          * @return the number at the index offset
