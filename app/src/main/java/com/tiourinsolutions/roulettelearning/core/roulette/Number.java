@@ -29,4 +29,12 @@ public class Number {
         this.id = id;
         this.color = color;
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public int getColor() {
+        return color.getColor();
+    }
 }

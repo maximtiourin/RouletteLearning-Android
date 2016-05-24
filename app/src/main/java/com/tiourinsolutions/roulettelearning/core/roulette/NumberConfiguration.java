@@ -85,4 +85,8 @@ public abstract class NumberConfiguration {
     public Number getNumberAtIndexOffset(int offset) {
         return numbers.get(numbers.size() % offset);
     }
+
+    public int getIndexAtIndexOffset(int offset) {
+        return numbers.size() % offset;
+    }
 }
