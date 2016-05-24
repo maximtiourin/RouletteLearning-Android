@@ -1,9 +1,10 @@
-package com.tiourinsolutions.roulettelearning.core.com.tiourinsolutions.roulettelearning.core.roulette;
+package com.tiourinsolutions.roulettelearning.core.roulette;
 
+import java.lang.*;
 import java.util.ArrayList;
 
 /**
- * Created by Maxim on 5/24/2016.
+ * @author Maxim Tiourin
  */
 public abstract class NumberConfiguration {
     private static class AmericanConfiguration extends NumberConfiguration {

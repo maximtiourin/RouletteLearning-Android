@@ -1,9 +1,9 @@
-package com.tiourinsolutions.roulettelearning.core.com.tiourinsolutions.roulettelearning.core.roulette;
+package com.tiourinsolutions.roulettelearning.core.roulette;
 
 import android.graphics.Color;
 
 /**
- * Created by Maxim on 5/24/2016.
+ * @author Maxim Tiourin
  */
 public class Number {
     public enum NumberColor {
