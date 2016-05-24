@@ -50,7 +50,7 @@ public class RenderCanvasView extends View {
         myPaint.setColor(color);
         myPaint.setStyle(Paint.Style.STROKE);
         myPaint.setStrokeWidth(8);
-        canvas.drawRect((int) (.1 * w), (int) (.1 * h), (int) (.2 * w), (int) (.2 * h), myPaint);
+        canvas.drawRect((int) (.1 * w) , (int) (.1 * h), (int) (.2 * w), (int) (.2 * h), myPaint);
     }
 
     public int getColor() {
