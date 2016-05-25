@@ -72,6 +72,7 @@ public abstract class NumberConfiguration {
 
     protected NumberConfiguration() {
         numbers = new ArrayList<Number>();
+        initNumbers();
     }
 
     protected abstract void initNumbers();
@@ -83,10 +84,44 @@ public abstract class NumberConfiguration {
      * @return the number at the index offset
      */
     public Number getNumberAtIndexOffset(int offset) {
-        return numbers.get(numbers.size() % offset);
+        return numbers.get(getIndexAtIndexOffset(offset));
     }
 
     public int getIndexAtIndexOffset(int offset) {
-        return numbers.size() % offset;
+        return offset % getConfigLength();
+    }
+
+    public int getConfigLength() {
+        return numbers.size();
+    }
+
+    public int getConfigGreenCount() {
+        int c = 0;
+        for (Number n : numbers) {
+            if (n.getColorId() == Number.NumberColor.Green.getId()) {
+                c++;
+            }
+        }
+        return c;
+    }
+
+    public int getConfigRedCount() {
+        int c = 0;
+        for (Number n : numbers) {
+            if (n.getColorId() == Number.NumberColor.Red.getId()) {
+                c++;
+            }
+        }
+        return c;
+    }
+
+    public int getConfigBlackCount() {
+        int c = 0;
+        for (Number n : numbers) {
+            if (n.getColorId() == Number.NumberColor.Black.getId()) {
+                c++;
+            }
+        }
+        return c;
     }
 }
