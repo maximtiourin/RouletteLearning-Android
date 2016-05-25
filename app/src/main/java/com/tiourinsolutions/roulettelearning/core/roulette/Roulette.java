@@ -10,8 +10,7 @@ import java.util.Random;
  */
 public class Roulette {
     //TODO add event messaging system for roulette events such as got black, got number, got column, etc.
-    private static final int REVOLUTIONS_MIN = 26;
-    private static final int REVOLUTIONS_MAX = 36;
+    public static final boolean DEBUG = true;
     private Random rng;
     private NumberConfiguration numberConfiguration;
     private ArrayList<Series> seriesHistory;
@@ -26,12 +25,14 @@ public class Roulette {
         wheelPosition = 0;
     }
 
-    public void simulateSpin() {
-        spinWheel();
+    public Number simulateSpin() {
+        wheelPosition = spinWheel();
 
         Number n = numberConfiguration.getNumberAtIndexOffset(wheelPosition);
 
-        System.out.println(n);
+        if (DEBUG) System.out.printf("%2s %s\n", n.getId(), n.getColorName());
+
+        return n;
     }
 
     /**
@@ -47,12 +48,11 @@ public class Roulette {
     }
 
     /**
-     * Spins the wheel to a random position, taking into account the current wheel starting position.
+     * Returns a random wheel position taking into account current wheelPosition, for a possible
+     * configuration edge over time.
      */
-    private void spinWheel() {
-        float numberOfRotations = (float) REVOLUTIONS_MIN + ((REVOLUTIONS_MAX - REVOLUTIONS_MIN) * rng.nextFloat());
-
-        wheelPosition = numberConfiguration.getIndexAtIndexOffset((int) (wheelPosition * numberOfRotations));
+    private int spinWheel() {
+        return numberConfiguration.getIndexAtIndexOffset(wheelPosition + rng.nextInt(Integer.MAX_VALUE - wheelPosition));
     }
 
     /**
