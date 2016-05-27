@@ -1,4 +1,4 @@
-package com.tiourinsolutions.roulettelearning.core;
+package com.tiourinsolutions.roulettelearning.android;
 
 import android.content.Context;
 import android.graphics.Canvas;
