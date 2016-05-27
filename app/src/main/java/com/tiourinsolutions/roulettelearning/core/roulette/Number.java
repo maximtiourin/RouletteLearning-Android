@@ -1,15 +1,16 @@
 package com.tiourinsolutions.roulettelearning.core.roulette;
 
-import android.graphics.Color;
+
+import com.tiourinsolutions.roulettelearning.util.Color;
 
 /**
  * @author Maxim Tiourin
  */
 public class Number {
     public enum NumberColor {
-        Green(0, "Green", Color.GREEN),
-        Red(1, "Red", Color.RED),
-        Black(2, "Black", Color.BLACK);
+        Green(0, "Green", Color.rgbToAndroidColorInt(29, 148, 29)),
+        Red(1, "Red", Color.rgbToAndroidColorInt(171, 0, 0)),
+        Black(2, "Black", Color.rgbToAndroidColorInt(0, 0, 0));
 
         private int id;
         private String name;
