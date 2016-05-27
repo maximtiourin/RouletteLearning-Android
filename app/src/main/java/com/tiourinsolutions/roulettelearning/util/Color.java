@@ -6,10 +6,6 @@ package com.tiourinsolutions.roulettelearning.util;
 public class Color {
     /**
      * Converts rgb values into a single integer used to describe a color in android.
-     * @param r
-     * @param g
-     * @param b
-     * @return
      */
     public static int rgbToAndroidColorInt(int r, int g, int b) {
         int res = 0;
