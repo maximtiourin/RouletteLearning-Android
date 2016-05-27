@@ -10,7 +10,7 @@ import java.util.Random;
  */
 public class Roulette {
     //TODO add event messaging system for roulette events such as got black, got number, got column, etc.
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
     private Random rng;
     private NumberConfiguration numberConfiguration;
     private ArrayList<Series> seriesHistory;
