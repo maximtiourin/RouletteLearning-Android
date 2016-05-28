@@ -21,12 +21,8 @@ import java.util.List;
  * @author Maxim Tiourin
  */
 public class RouletteSeriesAdapter extends ArrayAdapter<Number> {
-    private ArrayList<Number> list;
-
     public RouletteSeriesAdapter(Context context, @LayoutRes int layres, @IdRes int res, @NonNull List<Number> objects) {
         super(context, layres, res, objects);
-
-        list = (ArrayList) objects;
     }
 
     @Override
