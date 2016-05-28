@@ -1,5 +1,6 @@
 package com.tiourinsolutions.roulettelearning.core.roulette;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -9,16 +10,14 @@ import java.util.Random;
  * @author Maxim Tiourin
  */
 public class Roulette {
-    //TODO add event messaging system for roulette events such as got black, got number, got column, etc.
-    public static final boolean DEBUG = false;
-    private Random rng;
+    private SecureRandom rng;
     private NumberConfiguration numberConfiguration;
     private ArrayList<Series> seriesHistory;
     private Series currentSeries;
     private int wheelPosition;
 
     public Roulette(NumberConfiguration numberConfiguration) {
-        rng = new Random();
+        rng = new SecureRandom();
         this.numberConfiguration = numberConfiguration;
         seriesHistory = new ArrayList<Series>();
         currentSeries = null;
@@ -30,7 +29,7 @@ public class Roulette {
 
         Number n = numberConfiguration.getNumberAtIndexOffset(wheelPosition);
 
-        if (DEBUG) System.out.printf("%2s %s\n", n.getId(), n.getColorName());
+        if (currentSeries != null) currentSeries.addResult(n);
 
         return n;
     }
@@ -53,6 +52,10 @@ public class Roulette {
      */
     private int spinWheel() {
         return numberConfiguration.getIndexAtIndexOffset(wheelPosition + rng.nextInt(Integer.MAX_VALUE - wheelPosition));
+    }
+
+    public Series getCurrentSeries() {
+        return currentSeries;
     }
 
     /**
