@@ -3,6 +3,9 @@ package com.tiourinsolutions.roulettelearning.core;
 import com.tiourinsolutions.roulettelearning.core.roulette.Number;
 import com.tiourinsolutions.roulettelearning.core.roulette.NumberConfiguration;
 import com.tiourinsolutions.roulettelearning.core.roulette.Roulette;
+import com.tiourinsolutions.roulettelearning.core.roulette.Series;
+import com.tiourinsolutions.roulettelearning.core.roulette.statistics.ColorChainFrequency;
+import com.tiourinsolutions.roulettelearning.core.roulette.statistics.ColorFrequency;
 
 /**
  * @author Maxim Tiourin
@@ -11,38 +14,36 @@ public class TestMain {
     public static void main(String args[]) {
         Roulette r = new Roulette(NumberConfiguration.AMERICAN);
         r.startNewSeries();
+        Series series = r.getCurrentSeries();
 
         int green = 0, red = 0, black = 0;
-        int maxg = 0, maxr = 0, maxb = 0;
+        int spins = 5000;
 
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < spins; i++) {
             Number n = r.simulateSpin();
-
-            if (n.getColorId() == Number.NumberColor.Green.getId()) {
-                green += 1;
-                red = 0;
-                black = 0;
-
-                if (green > maxg) maxg = green;
-            }
-            else if (n.getColorId() == Number.NumberColor.Red.getId()) {
-                green = 0;
-                red += 1;
-                black = 0;
-
-                if (red > maxr) maxr = red;
-            }
-            else if (n.getColorId() == Number.NumberColor.Black.getId()) {
-                green = 0;
-                red = 0;
-                black += 1;
-
-                if (black > maxb) maxb = black;
-            }
         }
 
-        System.out.println("Max Green Chain: " + maxg);
-        System.out.println("Max Red Chain: " + maxr);
-        System.out.println("Max Black Chain: " + maxb);
+        System.out.println("--------------------------");
+        System.out.println("Series (" + spins + " spins)");
+        System.out.println("--------------------------");
+
+        ColorFrequency greencf = (ColorFrequency) series.getResultListener(ColorFrequency.ID_FREQUENCY_COLOR_GREEN);
+        ColorFrequency redcf = (ColorFrequency) series.getResultListener(ColorFrequency.ID_FREQUENCY_COLOR_RED);
+        ColorFrequency blackcf = (ColorFrequency) series.getResultListener(ColorFrequency.ID_FREQUENCY_COLOR_BLACK);
+
+        if (greencf != null) System.out.println("Green Color Frequency: " + greencf.getCount() + " (" + ((greencf.getCount() / (float) spins) * 100.0f) + "%)");
+        if (redcf != null) System.out.println("Red Color Frequency: " + redcf.getCount() + " (" + ((redcf.getCount() / (float) spins) * 100.0f) + "%)");
+        if (blackcf != null) System.out.println("Black Color Frequency: " + blackcf.getCount() + " (" + ((blackcf.getCount() / (float) spins) * 100.0f) + "%)");
+
+
+        ColorChainFrequency greenccf = (ColorChainFrequency) series.getResultListener(ColorChainFrequency.ID_FREQUENCY_CHAIN_COLOR_GREEN);
+        ColorChainFrequency redccf = (ColorChainFrequency) series.getResultListener(ColorChainFrequency.ID_FREQUENCY_CHAIN_COLOR_RED);
+        ColorChainFrequency blackccf = (ColorChainFrequency) series.getResultListener(ColorChainFrequency.ID_FREQUENCY_CHAIN_COLOR_BLACK);
+
+        if (greenccf != null) System.out.println("Max Green Chain: " + greenccf.getHighestChainLength());
+        if (redccf != null) System.out.println("Max Red Chain: " + redccf.getHighestChainLength());
+        if (blackccf != null) System.out.println("Max Black Chain: " + blackccf.getHighestChainLength());
+
+        r.concludeSeries();
     }
 }
