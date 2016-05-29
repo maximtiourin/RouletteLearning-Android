@@ -24,7 +24,7 @@ public class ColorFrequency implements ResultListener {
     public void notify(ResultEvent re) {
         Number n = re.getNumber();
 
-        if (n.getColorId() == colorType) {
+        if (n != null && n.getColorId() == colorType) {
             count++;
         }
     }
