@@ -8,6 +8,7 @@ import com.tiourinsolutions.roulettelearning.util.Color;
  */
 public class Number {
     public enum NumberColor {
+        Invalid(-1, "!Invalid!", Color.rgbToAndroidColorInt(255, 255, 255)),
         Green(0, "Green", Color.rgbToAndroidColorInt(29, 148, 29)),
         Red(1, "Red", Color.rgbToAndroidColorInt(171, 0, 0)),
         Black(2, "Black", Color.rgbToAndroidColorInt(0, 0, 0));
@@ -21,6 +22,20 @@ public class Number {
             this.name = name;
             this.color = color;
         }
+
+        public static NumberColor getNumberColorFromId(int id) {
+            if (NumberColor.Green.getId() == id) {
+                return NumberColor.Green;
+            }
+            else if (NumberColor.Red.getId() == id) {
+                return NumberColor.Red;
+            }
+            else if (NumberColor.Black.getId() == id) {
+                return NumberColor.Black;
+            }
+            return NumberColor.Invalid;
+        }
+
 
         public int getId() { return id; }
         public String getName() { return name; }
