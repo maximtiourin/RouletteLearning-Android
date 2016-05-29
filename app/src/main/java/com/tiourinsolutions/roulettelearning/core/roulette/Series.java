@@ -71,4 +71,12 @@ public class Series {
     public boolean removeResultListener(ResultListener rl) {
         return resultListeners.remove(rl);
     }
+
+    /**
+     * Must be called when the series is concluded in order to notify all resultEvent listeners
+     * one last time.
+     */
+    public void concludeSeries() {
+        notifyResultListeners(new ResultEvent(null));
+    }
 }
