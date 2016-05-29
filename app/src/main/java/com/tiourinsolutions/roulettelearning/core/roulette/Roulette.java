@@ -43,7 +43,7 @@ public class Roulette {
             seriesHistory.add(currentSeries);
             currentSeries.concludeSeries();
         }
-        currentSeries = new Series();
+        currentSeries = new Series(numberConfiguration);
     }
 
     /**
