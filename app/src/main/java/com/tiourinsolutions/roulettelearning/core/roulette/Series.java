@@ -14,10 +14,12 @@ import java.util.List;
 public class Series {
     protected ArrayList<Number> series;
     protected ArrayList<ResultListener> resultListeners;
+    protected NumberConfiguration numberConfiguration;
 
-    public Series() {
+    public Series(NumberConfiguration numberConfiguration) {
         series = new ArrayList<Number>();
         resultListeners = new ArrayList<ResultListener>();
+        this.numberConfiguration = numberConfiguration;
 
         initResultListeners();
     }
