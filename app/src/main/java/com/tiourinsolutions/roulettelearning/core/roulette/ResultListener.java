@@ -6,6 +6,10 @@ package com.tiourinsolutions.roulettelearning.core.roulette;
  * @author Maxim Tiourin
  */
 public interface ResultListener {
+    /**
+     * Perform relevant actions given a ResultEvent. Take care to account for a ResultEvent that
+     * contains a null Number value (this occurs when a series concludes and notifies one last time).
+     */
     public void notify(ResultEvent re);
     public String getId();
 }
