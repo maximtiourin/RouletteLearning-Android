@@ -41,8 +41,8 @@ public class Roulette {
     public void startNewSeries() {
         if (currentSeries != null) {
             seriesHistory.add(currentSeries);
+            currentSeries.concludeSeries();
         }
-
         currentSeries = new Series();
     }
 
@@ -64,6 +64,7 @@ public class Roulette {
     public void concludeSeries() {
         if (currentSeries != null) {
             seriesHistory.add(currentSeries);
+            currentSeries.concludeSeries();
         }
 
         currentSeries = null;
