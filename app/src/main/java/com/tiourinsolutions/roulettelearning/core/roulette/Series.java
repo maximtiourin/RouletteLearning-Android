@@ -38,6 +38,11 @@ public class Series {
         addResultListener(new ColorChainFrequency(ColorChainFrequency.ID_FREQUENCY_CHAIN_COLOR_RED, Number.NumberColor.Red.getId()));
         //Black Color Chain Frequency
         addResultListener(new ColorChainFrequency(ColorChainFrequency.ID_FREQUENCY_CHAIN_COLOR_BLACK, Number.NumberColor.Black.getId()));
+
+        //Non-Red Color Chain Frequency
+        addResultListener(new ColorChainFrequency(ColorChainFrequency.ID_FREQUENCY_CHAIN_COLOR_NOT_RED, Number.NumberColor.Red.getId(), true));
+        //Non-Black Color Chain Frequency
+        addResultListener(new ColorChainFrequency(ColorChainFrequency.ID_FREQUENCY_CHAIN_COLOR_NOT_BLACK, Number.NumberColor.Black.getId(), true));
     }
 
     public void addResult(Number result) {
