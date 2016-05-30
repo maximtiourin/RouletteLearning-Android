@@ -14,8 +14,11 @@ public class ColorChainFrequency implements ResultListener {
     public static final String ID_FREQUENCY_CHAIN_COLOR_GREEN = "frequency_chain_color_green";
     public static final String ID_FREQUENCY_CHAIN_COLOR_RED = "frequency_chain_color_red";
     public static final String ID_FREQUENCY_CHAIN_COLOR_BLACK = "frequency_chain_color_black";
-    public static final int MAX_TABLE_COUNT = 100; //Seeing a chain length of 100 is highly improbable
+    public static final String ID_FREQUENCY_CHAIN_COLOR_NOT_RED = "frequency_chain_color_not_red";
+    public static final String ID_FREQUENCY_CHAIN_COLOR_NOT_BLACK = "frequency_chain_color_not_black";
+    public static final int MAX_TABLE_COUNT = 256; //Seeing a chain length of 256 is highly improbable
     private String id;
+    private boolean notFlag; //If true, this frequency listener counts events where it is NOT the color specified
     private int colorType; //NumberColor index
     private int maxCount;
     private int count;
@@ -24,8 +27,17 @@ public class ColorChainFrequency implements ResultListener {
     private ArrayList<ArrayList<Integer>> distanceTable; //The 2 dimensional array list tracking all of the distances of a chain length
 
     public ColorChainFrequency(String id, int colorType) {
+        init(id, colorType, false);
+    }
+
+    public ColorChainFrequency(String id, int colorType, boolean notFlag) {
+        init(id, colorType, notFlag);
+    }
+
+    private void init(String id, int colorType, boolean notFlag) {
         this.id = id;
         this.colorType = colorType;
+        this.notFlag = notFlag;
         maxCount = 0;
         count = 0;
 
@@ -40,7 +52,10 @@ public class ColorChainFrequency implements ResultListener {
     public void notify(ResultEvent re) {
         Number n = re.getNumber();
 
-        if (n != null && n.getColorId() == colorType) {
+        if (n != null && notFlag && n.getColorId() != colorType) {
+            count++;
+        }
+        else if (n != null && !notFlag && n.getColorId() == colorType) {
             count++;
         }
         else if (count != 0) {
@@ -181,7 +196,23 @@ public class ColorChainFrequency implements ResultListener {
         }
     }
 
+    /**
+     * Returns the proper name of the color event this frequency listener is tracking.
+     * If notFlag is true, then prepends the name with 'Non-', ex: 'Non-Red', 'Non-Black',
+     * otherwise just returns ex: 'Red', 'Black', etc.
+     */
+    public String getProperColorName() {
+        String s = "";
+        if (notFlag) s += "Non-";
+        s += Number.NumberColor.getNumberColorFromId(colorType).getName();
+        return s;
+    }
+
     public int getColorType() {
         return colorType;
+    }
+
+    public boolean isNotFlagged() {
+        return notFlag;
     }
 }
