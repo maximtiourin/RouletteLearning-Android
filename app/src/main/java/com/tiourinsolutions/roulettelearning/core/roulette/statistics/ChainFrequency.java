@@ -211,7 +211,6 @@ public abstract class ChainFrequency extends Frequency {
                 return min;
             }
             else {
-                System.out.println("n = " + n + ", distanceTable(n) return a size 0 table");
                 return -1;
             }
         }
