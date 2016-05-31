@@ -41,55 +41,90 @@ public abstract class ChainFrequency extends Frequency {
             count = 0;
         }
 
+        //Increment all chain length distances
         for (int i = 1; i < distance.size(); i++) {
             incrementDistance(i);
         }
 
-        overallDistance++;
+        overallDistance++; //Increment overall distance tracker (value is used when new chain length distances are allocated)
     }
 
+    /**
+     * Increments the count of how many times the chain length has occurred.
+     * Will perform an allocation if 'index' is essentially greater than getMaxChainLength()
+     */
     protected void incrementCountTable(int index) {
         allocateCountTable(index);
 
         countTable.set(index, countTable.get(index) + 1);
     }
 
+    /**
+     * Increments the current tracking distance between two occurrences of the 'index' chain length
+     * Will perform an allocation if 'index' is essentially greater than getMaxChainLength()
+     */
     protected void incrementDistance(int index) {
         allocateDistance(index);
 
         distance.set(index, distance.get(index) + 1);
     }
 
+    /**
+     * Adds the current chain length occurrence distance to the list of such occurrence distances for the 'count' chain length
+     * Will perform an allocation if 'count' is essentially greater than getMaxChainLength()
+     */
     protected void addToDistanceTable(int count) {
         allocateDistanceTable(count);
 
         distanceTable.get(count).add(getDistance(count) - count);
     }
 
+    /**
+     * Returns the occurrence count of the 'index' chain length
+     * Will perform an allocation if 'index' is essentially greater than getMaxChainLength()
+     *
+     * There is a public method getChainLengthCount(n) which will call this method, but will
+     * fail fast and return 0 if the chain length hasn't occurred, without the possibility of performing any allocation.
+     */
     protected int getCountTable(int index) {
         allocateCountTable(index);
 
         return countTable.get(index);
     }
 
+    /**
+     * Returns the current chain length occurrence distance for the 'index' chain length
+     * Will perform an allocation if 'index' is essentially greater than getMaxChainLength()
+     */
     protected int getDistance(int index) {
         allocateDistance(index);
 
         return distance.get(index);
     }
 
+    /**
+     * Sets the current chain length occurrence distance for the 'index' chain length to 'value'
+     * Will perform an allocation if 'index' is essentially greater than getMaxChainLength()
+     */
     protected void setDistance(int index, int value) {
         allocateDistance(index);
 
         distance.set(index, value);
     }
 
+    /**
+     * Returns a list of chain length occurrence distances for the 'index' chain length in order of their occurrence
+     * Will perform an allocation if 'index' is essentially greater than getMaxChainLength()
+     */
     protected List<Integer> getDistanceTable(int index) {
         allocateDistanceTable(index);
 
         return distanceTable.get(index);
     }
 
+    /**
+     * Allocates extra 'int 0' entries for countTable up to 'count', if necessary
+     */
     protected boolean allocateCountTable(int count) {
         int size = countTable.size();
 
@@ -105,6 +140,9 @@ public abstract class ChainFrequency extends Frequency {
         }
     }
 
+    /**
+     * Allocates extra 'overallDistance' entries for distance up to 'count', if necessary
+     */
     protected boolean allocateDistance(int count) {
         int size = distance.size();
 
@@ -120,6 +158,9 @@ public abstract class ChainFrequency extends Frequency {
         }
     }
 
+    /**
+     * Allocates extra 'empty ArrayList of Integer' entries for distanceTable up to 'count', if necessary
+     */
     protected boolean allocateDistanceTable(int count) {
         int size = distanceTable.size();
 
@@ -135,6 +176,9 @@ public abstract class ChainFrequency extends Frequency {
         }
     }
 
+    /**
+     * Returns the maximum chain length encountered so far.
+     */
     public int getMaxChainLength() {
         return maxCount;
     }
