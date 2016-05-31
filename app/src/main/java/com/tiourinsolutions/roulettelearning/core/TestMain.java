@@ -50,6 +50,8 @@ public class TestMain {
         ColorChainFrequency greenccf = (ColorChainFrequency) series.getResultListener(ColorChainFrequency.ID_FREQUENCY_CHAIN_COLOR_GREEN);
         ColorChainFrequency redccf = (ColorChainFrequency) series.getResultListener(ColorChainFrequency.ID_FREQUENCY_CHAIN_COLOR_RED);
         ColorChainFrequency blackccf = (ColorChainFrequency) series.getResultListener(ColorChainFrequency.ID_FREQUENCY_CHAIN_COLOR_BLACK);
+        ColorChainFrequency nredccf = (ColorChainFrequency) series.getResultListener(ColorChainFrequency.ID_FREQUENCY_CHAIN_COLOR_NOT_RED);
+        ColorChainFrequency nblackccf = (ColorChainFrequency) series.getResultListener(ColorChainFrequency.ID_FREQUENCY_CHAIN_COLOR_NOT_BLACK);
 
         if (greenccf != null) System.out.println("Max Green Chain: " + greenccf.getMaxChainLength());
         if (redccf != null) System.out.println("Max Red Chain: " + redccf.getMaxChainLength());
@@ -57,7 +59,12 @@ public class TestMain {
 
         System.out.println("--------------------------");
 
-        ColorChainFrequency ccf[] = new ColorChainFrequency[]{greenccf, redccf, blackccf};
+        if (nblackccf != null) System.out.println("Max Non-Black Chain: " + nblackccf.getMaxChainLength());
+        if (nredccf != null) System.out.println("Max Non-Red Chain: " + nredccf.getMaxChainLength());
+
+        System.out.println("--------------------------");
+
+        ColorChainFrequency ccf[] = new ColorChainFrequency[]{nblackccf, nredccf};
 
         for (int j = 0; j < ccf.length; j++) {
             ColorChainFrequency f = ccf[j];
@@ -65,14 +72,18 @@ public class TestMain {
                 for (int i = 1; i <= f.getMaxChainLength(); i++) {
                     int n = f.getChainLengthCount(i);
 
-                    System.out.printf("Amount of %5s x %2d Chain: %" + formatOffset +
-                                    "d  ::  (Min: %" + formatOffset + "d, Avg: %" + (formatOffset + 7) +
-                                    ".2f, Max: %" + formatOffset + "d)\n",
-                            Number.NumberColor.getNumberColorFromId(f.getColorType()).getName(), i, n,
-                            f.getMinChainLengthDistance(i), f.getAvgChainLengthDistance(i), f.getMaxChainLengthDistance(i));
+                    if (n > 0) {
+                        System.out.printf("Amount of %10s x %3d Chain: %" + formatOffset +
+                                        "d  ::  (Min: %" + formatOffset + "d, Avg: %" + (formatOffset + 7) +
+                                        ".2f, Max: %" + formatOffset + "d)\n",
+                                f.getProperColorName(), i, n,
+                                f.getMinChainLengthDistance(i), f.getAvgChainLengthDistance(i), f.getMaxChainLengthDistance(i));
+                    }
                 }
             }
             System.out.println("--------------------------");
         }
+
+        while(true) {} //Dirty memory usage testing
     }
 }
