@@ -91,17 +91,12 @@ public abstract class ChainFrequency extends Frequency {
     }
 
     protected boolean allocateCountTable(int count) {
-        if (count > countTable.size() - 1) {
-            ArrayList<Integer> newCountTable = new ArrayList<Integer>(count + 1);
-            for (int i = 0; i < count + 1; i++) {
-                if (i < countTable.size()) {
-                    newCountTable.add(countTable.get(i));
-                }
-                else {
-                    newCountTable.add(0);
-                }
+        int size = countTable.size();
+
+        if (count > size - 1) {
+            for (int i = size; i < count + 1; i++) {
+                countTable.add(0);
             }
-            countTable = newCountTable;
 
             return true;
         }
@@ -111,17 +106,12 @@ public abstract class ChainFrequency extends Frequency {
     }
 
     protected boolean allocateDistance(int count) {
-        if (count > distance.size() - 1) {
-            ArrayList<Integer> newDistance = new ArrayList<Integer>(count + 1);
-            for (int i = 0; i < count + 1; i++) {
-                if (i < distance.size()) {
-                    newDistance.add(distance.get(i));
-                }
-                else {
-                    newDistance.add(overallDistance);
-                }
+        int size = distance.size();
+
+        if (count > size - 1) {
+            for (int i = size; i < count + 1; i++) {
+                distance.add(overallDistance);
             }
-            distance = newDistance;
 
             return true;
         }
@@ -131,17 +121,12 @@ public abstract class ChainFrequency extends Frequency {
     }
 
     protected boolean allocateDistanceTable(int count) {
-        if (count > distanceTable.size() - 1) {
-            ArrayList<ArrayList<Integer>> newDistanceTable = new ArrayList<ArrayList<Integer>>(count + 1);
-            for (int i = 0; i < count + 1; i++) {
-                if (i < distanceTable.size()) {
-                    newDistanceTable.add(distanceTable.get(i));
-                }
-                else {
-                    newDistanceTable.add(new ArrayList<Integer>());
-                }
+        int size = distanceTable.size();
+
+        if (count > size - 1) {
+            for (int i = size; i < count + 1; i++) {
+                distanceTable.add(new ArrayList<Integer>());
             }
-            distanceTable = newDistanceTable;
 
             return true;
         }
