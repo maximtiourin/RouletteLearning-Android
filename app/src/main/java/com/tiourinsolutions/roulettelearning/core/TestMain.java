@@ -22,7 +22,7 @@ public class TestMain {
 
         Series series = r.getCurrentSeries();
         int green = 0, red = 0, black = 0;
-        int spins = 5000;
+        int spins = 1000000;
         int formatOffset = (spins + "").length();
 
         for (int i = 0; i < spins; i++) {
@@ -84,6 +84,6 @@ public class TestMain {
             System.out.println("--------------------------");
         }
 
-        while(true) {} //Dirty memory usage testing
+        //while(true) {} //Dirty memory usage testing
     }
 }
