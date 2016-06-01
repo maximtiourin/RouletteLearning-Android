@@ -14,9 +14,23 @@ public abstract class ChainFrequency extends Frequency {
     public static final String ID_FREQUENCY_CHAIN_GREEN = "frequency_chain_green";
     public static final String ID_FREQUENCY_CHAIN_RED = "frequency_chain_red";
     public static final String ID_FREQUENCY_CHAIN_BLACK = "frequency_chain_black";
+    public static final String ID_FREQUENCY_CHAIN_EVEN = "frequency_chain_even";
+    public static final String ID_FREQUENCY_CHAIN_ODD = "frequency_chain_odd";
+    public static final String ID_FREQUENCY_CHAIN_1TO18 = "frequency_chain_1to18";
+    public static final String ID_FREQUENCY_CHAIN_19TO36 = "frequency_chain_19to36";
+    public static final String ID_FREQUENCY_CHAIN_COLUMN1 = "frequency_chain_column1";
+    public static final String ID_FREQUENCY_CHAIN_COLUMN2 = "frequency_chain_column2";
+    public static final String ID_FREQUENCY_CHAIN_COLUMN3 = "frequency_chain_column3";
     public static final String ID_FREQUENCY_CHAIN_NOT_GREEN = "frequency_chain_not_green";
     public static final String ID_FREQUENCY_CHAIN_NOT_RED = "frequency_chain_not_red";
     public static final String ID_FREQUENCY_CHAIN_NOT_BLACK = "frequency_chain_not_black";
+    public static final String ID_FREQUENCY_CHAIN_NOT_EVEN = "frequency_chain_not_even";
+    public static final String ID_FREQUENCY_CHAIN_NOT_ODD = "frequency_chain_not_odd";
+    public static final String ID_FREQUENCY_CHAIN_NOT_1TO18 = "frequency_chain_not_1to18";
+    public static final String ID_FREQUENCY_CHAIN_NOT_19TO36 = "frequency_chain_not_19to36";
+    public static final String ID_FREQUENCY_CHAIN_NOT_COLUMN1 = "frequency_chain_not_column1";
+    public static final String ID_FREQUENCY_CHAIN_NOT_COLUMN2 = "frequency_chain_not_column2";
+    public static final String ID_FREQUENCY_CHAIN_NOT_COLUMN3 = "frequency_chain_not_column3";
 
     protected int maxCount;
     protected int overallDistance; //A distance counter that just tracks the amount of results.
