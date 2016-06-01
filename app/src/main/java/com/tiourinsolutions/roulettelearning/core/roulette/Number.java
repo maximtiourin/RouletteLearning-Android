@@ -45,15 +45,21 @@ public class Number {
     }
 
     private String id; //The string identifier representing this number
+    private int numEval; //The integer this number evaluates as
     private NumberColor color; //The NumberColor value of this number
 
-    public Number(String id, NumberColor color) {
+    public Number(String id, int numEval, NumberColor color) {
         this.id = id;
+        this.numEval = numEval;
         this.color = color;
     }
 
     public String getId() {
         return id;
+    }
+
+    public int getNumEval() {
+        return numEval;
     }
 
     public int getColor() {
