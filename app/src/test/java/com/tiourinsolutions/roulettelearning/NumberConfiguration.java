@@ -1,5 +1,7 @@
 package com.tiourinsolutions.roulettelearning;
 
+import com.tiourinsolutions.roulettelearning.core.roulette.Number;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -24,6 +26,9 @@ public class NumberConfiguration {
         assertEquals(configAmerican.getConfigBlackCount(), 18);
         assertEquals(configAmerican.getNumberAtIndexOffset(0).getId(), "00");
         assertEquals(configAmerican.getNumberAtIndexOffset(19).getId(), "0");
+        for (Number n : configAmerican.getNumberList()) {
+            assertEquals((int) Integer.valueOf(n.getId()), n.getNumEval());
+        }
     }
 
     @Test
