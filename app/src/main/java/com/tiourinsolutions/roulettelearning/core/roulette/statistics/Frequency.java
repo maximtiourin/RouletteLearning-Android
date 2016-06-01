@@ -9,11 +9,22 @@ import com.tiourinsolutions.roulettelearning.core.roulette.ResultListener;
  * @author Maxim Tiourin
  */
 public abstract class Frequency implements ResultListener {
+    public static final String PREFIX_ID_FREQUENCY = "frequency_";
+    public static final String PREFIX_ID_FREQUENCY_NOT = "frequency_not_";
+    public static final String ID_FREQUENCY_GREEN = "frequency_green";
+    public static final String ID_FREQUENCY_RED = "frequency_red";
+    public static final String ID_FREQUENCY_BLACK = "frequency_black";
+    public static final String ID_FREQUENCY_NOT_GREEN = "frequency_not_green";
+    public static final String ID_FREQUENCY_NOT_RED = "frequency_not_red";
+    public static final String ID_FREQUENCY_NOT_BLACK = "frequency_not_black";
+
     protected String id;
+    protected String eventName;
     protected int count;
 
-    public Frequency(String id) {
+    public Frequency(String id, String eventName) {
         this.id = id;
+        this.eventName = eventName;
         count = 0;
     }
 
@@ -32,6 +43,8 @@ public abstract class Frequency implements ResultListener {
     public String getId() {
         return id;
     }
+
+    public String getEventName() { return eventName; }
 
     public int getCount() {
         return count;
