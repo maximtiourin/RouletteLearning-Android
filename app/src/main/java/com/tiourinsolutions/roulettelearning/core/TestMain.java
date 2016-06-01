@@ -1,13 +1,12 @@
 package com.tiourinsolutions.roulettelearning.core;
 
-import android.util.Pair;
-
 import com.tiourinsolutions.roulettelearning.core.roulette.Number;
 import com.tiourinsolutions.roulettelearning.core.roulette.NumberConfiguration;
+import com.tiourinsolutions.roulettelearning.core.roulette.ResultListener;
 import com.tiourinsolutions.roulettelearning.core.roulette.Roulette;
 import com.tiourinsolutions.roulettelearning.core.roulette.Series;
-import com.tiourinsolutions.roulettelearning.core.roulette.statistics.ColorChainFrequency;
-import com.tiourinsolutions.roulettelearning.core.roulette.statistics.ColorFrequency;
+import com.tiourinsolutions.roulettelearning.core.roulette.statistics.ChainFrequency;
+import com.tiourinsolutions.roulettelearning.core.roulette.statistics.Frequency;
 
 import java.util.ArrayList;
 
@@ -22,7 +21,7 @@ public class TestMain {
 
         Series series = r.getCurrentSeries();
         int green = 0, red = 0, black = 0;
-        int spins = 1000000;
+        int spins = 5000;
         int formatOffset = (spins + "").length();
 
         for (int i = 0; i < spins; i++) {
@@ -36,49 +35,40 @@ public class TestMain {
         System.out.println("Series (" + spins + " spins)");
         System.out.println("--------------------------");
 
-        ColorFrequency greencf = (ColorFrequency) series.getResultListener(ColorFrequency.ID_FREQUENCY_COLOR_GREEN);
-        ColorFrequency redcf = (ColorFrequency) series.getResultListener(ColorFrequency.ID_FREQUENCY_COLOR_RED);
-        ColorFrequency blackcf = (ColorFrequency) series.getResultListener(ColorFrequency.ID_FREQUENCY_COLOR_BLACK);
+        ArrayList<Frequency> frequencies = new ArrayList<Frequency>();
+        ArrayList<ChainFrequency> chainFrequencies = new ArrayList<ChainFrequency>();
 
-        if (greencf != null) System.out.println("Green Color Frequency: " + greencf.getCount() + " (" + ((greencf.getCount() / (float) spins) * 100.0f) + "%)");
-        if (redcf != null) System.out.println("Red Color Frequency: " + redcf.getCount() + " (" + ((redcf.getCount() / (float) spins) * 100.0f) + "%)");
-        if (blackcf != null) System.out.println("Black Color Frequency: " + blackcf.getCount() + " (" + ((blackcf.getCount() / (float) spins) * 100.0f) + "%)");
+        for (ResultListener rl : series.getResultListeners()) {
+            if (rl instanceof ChainFrequency) {
+                chainFrequencies.add((ChainFrequency) rl);
+            }
+            else if (rl instanceof Frequency) {
+                frequencies.add((Frequency) rl);
+            }
+        }
 
-        System.out.println("--------------------------");
-
-
-        ColorChainFrequency greenccf = (ColorChainFrequency) series.getResultListener(ColorChainFrequency.ID_FREQUENCY_CHAIN_COLOR_GREEN);
-        ColorChainFrequency redccf = (ColorChainFrequency) series.getResultListener(ColorChainFrequency.ID_FREQUENCY_CHAIN_COLOR_RED);
-        ColorChainFrequency blackccf = (ColorChainFrequency) series.getResultListener(ColorChainFrequency.ID_FREQUENCY_CHAIN_COLOR_BLACK);
-        ColorChainFrequency nredccf = (ColorChainFrequency) series.getResultListener(ColorChainFrequency.ID_FREQUENCY_CHAIN_COLOR_NOT_RED);
-        ColorChainFrequency nblackccf = (ColorChainFrequency) series.getResultListener(ColorChainFrequency.ID_FREQUENCY_CHAIN_COLOR_NOT_BLACK);
-
-        if (greenccf != null) System.out.println("Max Green Chain: " + greenccf.getMaxChainLength());
-        if (redccf != null) System.out.println("Max Red Chain: " + redccf.getMaxChainLength());
-        if (blackccf != null) System.out.println("Max Black Chain: " + blackccf.getMaxChainLength());
+        for (Frequency f : frequencies) {
+            System.out.println(f.getEventName() + " Frequency: " + f.getCount() + " (" + ((f.getCount() / (float) spins) * 100.0f) + "%)");
+        }
 
         System.out.println("--------------------------");
 
-        if (nblackccf != null) System.out.println("Max Non-Black Chain: " + nblackccf.getMaxChainLength());
-        if (nredccf != null) System.out.println("Max Non-Red Chain: " + nredccf.getMaxChainLength());
+        for (ChainFrequency f : chainFrequencies) {
+            System.out.println("Max " + f.getEventName() + " Chain: " + f.getMaxChainLength());
+        }
 
         System.out.println("--------------------------");
 
-        ColorChainFrequency ccf[] = new ColorChainFrequency[]{nblackccf, nredccf};
+        for (ChainFrequency f : chainFrequencies) {
+            for (int i = 1; i <= f.getMaxChainLength(); i++) {
+                int n = f.getChainLengthCount(i);
 
-        for (int j = 0; j < ccf.length; j++) {
-            ColorChainFrequency f = ccf[j];
-            if (f != null) {
-                for (int i = 1; i <= f.getMaxChainLength(); i++) {
-                    int n = f.getChainLengthCount(i);
-
-                    if (n > 0) {
-                        System.out.printf("Amount of %10s x %3d Chain: %" + formatOffset +
-                                        "d  ::  (Min: %" + formatOffset + "d, Avg: %" + (formatOffset + 7) +
-                                        ".2f, Max: %" + formatOffset + "d)\n",
-                                f.getProperColorName(), i, n,
-                                f.getMinChainLengthDistance(i), f.getAvgChainLengthDistance(i), f.getMaxChainLengthDistance(i));
-                    }
+                if (n > 0) {
+                    System.out.printf("Amount of %10s x %3d Chain: %" + formatOffset +
+                                    "d  ::  (Min: %" + formatOffset + "d, Avg: %" + (formatOffset + 7) +
+                                    ".2f, Max: %" + formatOffset + "d)\n",
+                            f.getEventName(), i, n,
+                            f.getMinChainLengthDistance(i), f.getAvgChainLengthDistance(i), f.getMaxChainLengthDistance(i));
                 }
             }
             System.out.println("--------------------------");
