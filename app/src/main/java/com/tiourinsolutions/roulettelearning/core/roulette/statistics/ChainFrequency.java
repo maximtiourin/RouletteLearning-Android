@@ -9,14 +9,23 @@ import java.util.List;
  * @author Maxim Tiourin
  */
 public abstract class ChainFrequency extends Frequency {
+    public static final String PREFIX_ID_FREQUENCY_CHAIN = "frequency_chain_";
+    public static final String PREFIX_ID_FREQUENCY_CHAIN_NOT = "frequency_chain_not_";
+    public static final String ID_FREQUENCY_CHAIN_GREEN = "frequency_chain_green";
+    public static final String ID_FREQUENCY_CHAIN_RED = "frequency_chain_red";
+    public static final String ID_FREQUENCY_CHAIN_BLACK = "frequency_chain_black";
+    public static final String ID_FREQUENCY_CHAIN_NOT_GREEN = "frequency_chain_not_green";
+    public static final String ID_FREQUENCY_CHAIN_NOT_RED = "frequency_chain_not_red";
+    public static final String ID_FREQUENCY_CHAIN_NOT_BLACK = "frequency_chain_not_black";
+
     protected int maxCount;
     protected int overallDistance; //A distance counter that just tracks the amount of results.
     protected ArrayList<Integer> countTable;
     protected ArrayList<Integer> distance; //The current tracking distance for each chain length
     protected ArrayList<ArrayList<Integer>> distanceTable; //The 2 dimensional array list tracking all of the distances of a chain length
 
-    public ChainFrequency(String id) {
-        super(id);
+    public ChainFrequency(String id, String eventName) {
+        super(id, eventName);
 
         maxCount = 0;
         overallDistance = 0;
