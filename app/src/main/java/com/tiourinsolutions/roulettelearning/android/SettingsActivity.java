@@ -1,6 +1,6 @@
 package com.tiourinsolutions.roulettelearning.android;
 
-import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -10,41 +10,27 @@ import android.view.MenuItem;
 
 import com.tiourinsolutions.roulettelearning.R;
 
-public class MainActivity extends AppCompatActivity {
-    //ListView listView;
+public class SettingsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_settings);
 
         //Set appbar_general
         Toolbar appbar = (Toolbar) findViewById(R.id.appbar);
         setSupportActionBar(appbar);
 
-
-
-
-        /*Roulette r = new Roulette(NumberConfiguration.AMERICAN);
-        r.startNewSeries();
-
-        ArrayList<Number> results = new ArrayList<Number>();
-        for (int i = 0; i < 1000; i++) {
-            Number n = r.simulateSpin();
-            results.add(n);
-        }
-
-        RouletteSeriesAdapter rouletteAdapter = new RouletteSeriesAdapter(this, R.layout.list_item_1, R.id.textView, results);
-
-        listView = (ListView) findViewById(R.id.listView);
-        listView.setAdapter(rouletteAdapter);*/
+        ActionBar ab = getSupportActionBar();
+        ab.setHomeButtonEnabled(true);
+        ab.setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inf = getMenuInflater();
-        inf.inflate(R.menu.appbar_general, menu);
+        inf.inflate(R.menu.appbar_barebones, menu);
         return true;
     }
 
@@ -52,9 +38,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-            case R.id.action_settings:
-                Intent intent = new Intent(this, SettingsActivity.class);
-                startActivity(intent);
+            case android.R.id.home:
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
