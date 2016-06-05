@@ -3,6 +3,8 @@ package com.tiourinsolutions.roulettelearning.core.roulette;
 
 import com.tiourinsolutions.roulettelearning.util.Color;
 
+import java.util.Comparator;
+
 /**
  * @author Maxim Tiourin
  */
@@ -77,5 +79,86 @@ public class Number {
     @Override
     public String toString() {
         return "(" + getId() + ", " + getColorName() + ")";
+    }
+
+    /**
+     * Returns a comparator that helps sort numbers into ascending order.
+     * EX: 0, 00, 1, 2, 3, 4, 5, etc
+     */
+    public static class AscendingOrderComparator implements Comparator<Number> {
+        @Override
+        public int compare(Number lhs, Number rhs) {
+            if (lhs.getNumEval() < rhs.getNumEval()) {
+                return -1;
+            }
+            else if (lhs.getNumEval() > rhs.getNumEval()) {
+                return 1;
+            }
+            else {
+                //Num evals are equal, check for 0/00 case
+                if (lhs.getId().length() < rhs.getId().length()) {
+                    return -1;
+                }
+                else if (lhs.getId().length() > rhs.getId().length()) {
+                    return 1;
+                }
+                else {
+                    return 0;
+                }
+            }
+        }
+    }
+
+    /**
+     * Returns a comparator that helps sort numbers into ascending order, but puts 0/00 at end
+     * EX: 1, 2, 3, 4, 5, ..., 36, 0, 00
+     */
+    public static class SpecialAscendingOrderComparator implements Comparator<Number> {
+        @Override
+        public int compare(Number lhs, Number rhs) {
+            if (lhs.getNumEval() == 0) {
+                if (rhs.getNumEval() == 0) {
+                    if (lhs.getId().length() < rhs.getId().length()) {
+                        return -1;
+                    }
+                    else if (lhs.getId().length() > rhs.getId().length()) {
+                        return 1;
+                    }
+                    else {
+                        return 0;
+                    }
+                }
+                else {
+                    return 1;
+                }
+            }
+            else if (rhs.getNumEval() == 0) {
+                if (lhs.getNumEval() == 0) {
+                    if (lhs.getId().length() < rhs.getId().length()) {
+                        return -1;
+                    }
+                    else if (lhs.getId().length() > rhs.getId().length()) {
+                        return 1;
+                    }
+                    else {
+                        return 0;
+                    }
+                }
+                else {
+                    return -1;
+                }
+            }
+            else {
+                if (lhs.getNumEval() < rhs.getNumEval()) {
+                    return -1;
+                }
+                else if (lhs.getNumEval() > rhs.getNumEval()) {
+                    return 1;
+                }
+                else {
+                    return 0;
+                }
+            }
+        }
     }
 }

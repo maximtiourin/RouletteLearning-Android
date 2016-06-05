@@ -18,7 +18,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_settings);
 
-        //Set appbar_general
+        //Set appbar
         Toolbar appbar = (Toolbar) findViewById(R.id.appbar);
         setSupportActionBar(appbar);
 

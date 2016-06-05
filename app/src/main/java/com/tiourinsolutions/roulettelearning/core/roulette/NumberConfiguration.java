@@ -2,6 +2,8 @@ package com.tiourinsolutions.roulettelearning.core.roulette;
 
 import java.lang.*;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -68,13 +70,24 @@ public abstract class NumberConfiguration {
         }
     }
 
+    public static final String ID_AMERICAN = "AMERICAN";
+    public static final String ID_EUROPEAN = "EUROPEAN";
     public static NumberConfiguration AMERICAN = new AmericanConfiguration();
     public static NumberConfiguration EUROPEAN = new EuropeanConfiguration();
     protected ArrayList<Number> numbers;
+    protected ArrayList<Number> sortedNumbers;
 
     protected NumberConfiguration() {
         numbers = new ArrayList<Number>();
+        sortedNumbers = new ArrayList<Number>();
+
         initNumbers();
+
+        for (Number n : numbers) {
+            sortedNumbers.add(n);
+        }
+
+        Collections.sort(sortedNumbers, new Number.SpecialAscendingOrderComparator());
     }
 
     protected abstract void initNumbers();
@@ -89,11 +102,26 @@ public abstract class NumberConfiguration {
         return numbers.get(getIndexAtIndexOffset(offset));
     }
 
-    public int getIndexAtIndexOffset(int offset) {
-        return offset % getConfigLength();
+    /**
+     * Returns the number with the given string id, otherwise returns null.
+     * This is primarily useful inside of Android activities to pass around numbers
+     * using only strings.
+     */
+    public Number getNumberWithStringId(String id) {
+        for (Number n : numbers) {
+            if (n.getId().equals(id)) {
+                return n;
+            }
+        }
+
+        return null;
     }
 
-    public int getConfigLength() {
+    public int getIndexAtIndexOffset(int offset) {
+        return offset % getConfigSize();
+    }
+
+    public int getConfigSize() {
         return numbers.size();
     }
 
@@ -129,5 +157,24 @@ public abstract class NumberConfiguration {
 
     public List<Number> getNumberList() {
         return numbers;
+    }
+
+    public List<Number> getSortedNumberList() { return sortedNumbers; }
+
+    /**
+     * Returns the static config given the config string id, returns null if no config
+     * exists for the given id. This method is primarily used inside of Android activities
+     * to reference number configurations just by handling string ids.
+     */
+    public static NumberConfiguration getConfigurationFromStringId(String id) {
+        if (id.equals("AMERICAN")) {
+            return AMERICAN;
+        }
+        else if (id.equals("EUROPEAN")) {
+            return EUROPEAN;
+        }
+        else {
+            return null;
+        }
     }
 }

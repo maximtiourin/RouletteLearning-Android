@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        //Set appbar_general
+        //Set appbar
         Toolbar appbar = (Toolbar) findViewById(R.id.appbar);
         setSupportActionBar(appbar);
 
@@ -42,6 +42,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        if (requestCode == 0) {
+            if (resultCode == RESULT_OK) {
+                //TODO do something
+            }
+            else if (resultCode == RESULT_CANCELED) {
+                //Do Nothing
+            }
+        }
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inf = getMenuInflater();
         inf.inflate(R.menu.appbar_general, menu);
@@ -51,10 +63,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
+        Intent intent;
         switch (item.getItemId()) {
             case R.id.action_settings:
-                Intent intent = new Intent(this, SettingsActivity.class);
+                intent = new Intent(this, SettingsActivity.class);
                 startActivity(intent);
+                return true;
+            case R.id.action_testnumber:
+                intent = new Intent(this, SelectNumberActivity.class);
+                intent.putExtra("numberConfiguration", "AMERICAN");
+                startActivityForResult(intent, 0);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

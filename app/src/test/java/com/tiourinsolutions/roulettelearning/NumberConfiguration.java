@@ -20,7 +20,7 @@ public class NumberConfiguration {
 
     @Test
     public void AmericanConfig() throws Exception {
-        assertEquals(configAmerican.getConfigLength(), 38);
+        assertEquals(configAmerican.getConfigSize(), 38);
         assertEquals(configAmerican.getConfigGreenCount(), 2);
         assertEquals(configAmerican.getConfigRedCount(), 18);
         assertEquals(configAmerican.getConfigBlackCount(), 18);
