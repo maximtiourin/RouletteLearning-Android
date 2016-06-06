@@ -2,30 +2,33 @@ package com.tiourinsolutions.roulettelearning.android;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 
 import com.tiourinsolutions.roulettelearning.R;
 import com.tiourinsolutions.roulettelearning.core.roulette.Number;
 import com.tiourinsolutions.roulettelearning.core.roulette.NumberConfiguration;
 
+import java.util.ArrayList;
 import java.util.List;
 
+//TODO add a confirmation dialog, which can be enabled/disabled in settings, to confirm number selection
 public class SelectNumberActivity extends AppCompatActivity {
-    public static final int NUMBER_OF_COLUMNS = 4;
+    public static final int COLOR_BUTTON_TEXT = Color.WHITE;
+    public static final int COLOR_BUTTON_BORDER = Color.rgb(175, 175, 175);
+    public static final float SCALE_BUTTON_TEXT = 1 / 2.2f;
+    public static final int NUMBER_OF_COLUMNS = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,30 +54,58 @@ public class SelectNumberActivity extends AppCompatActivity {
                 //Determine number of rows to use for the table layout
                 final int configSize = numberConfig.getConfigSize();
                 final int numRows = (int) Math.ceil(configSize / (double) NUMBER_OF_COLUMNS);
+                final int greenCount = numberConfig.getConfigGreenCount();
+                final ArrayList<Button> buttons = new ArrayList<Button>();
 
                 List<Number> sortedNumbers = numberConfig.getSortedNumberList();
 
-                //Create and populate table layout
-                //TODO instead of using tablelayout, change to using tiered linear layouts so that entire screen space is used.
-                TableLayout layout = (TableLayout) findViewById(R.id.tableView);
+                LinearLayout layout = (LinearLayout) findViewById(R.id.numberContainer);
+                layout.setWeightSum(numRows);
 
                 int col = 0;
                 for (int i = 0; i < numRows; i++) {
-                    TableRow row = new TableRow(this);
+                    LinearLayout row = new LinearLayout(this);
+                    LinearLayout.LayoutParams rparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1f);
+                    row.setLayoutParams(rparams);
+                    row.setOrientation(LinearLayout.HORIZONTAL);
+                    row.setWeightSum(NUMBER_OF_COLUMNS);
 
-                    //Add up to NUMBER_OF_COLUMNS children to this table row, or any remaining numbers less than.
+                    //Add up to NUMBER_OF_COLUMNS children to this row, or any remaining numbers less than.
                     int count = 0;
                     while (count < NUMBER_OF_COLUMNS) {
                         if (col < configSize) {
                             final Number number = sortedNumbers.get(col);
 
                             Button button = new Button(this);
-                            button.setMinWidth(0);
-                            button.setMinHeight(0);
-                            button.setText(number.getId());
-                            button.setTextColor(Color.WHITE);
-                            button.setBackgroundColor(number.getColor());
 
+                            button.setText(number.getId());
+                            button.setTextColor(COLOR_BUTTON_TEXT);
+
+                            //Set background color (and border if supported)
+                            if (Build.VERSION.SDK_INT > 15) {
+                                GradientDrawable gd = new GradientDrawable();
+                                gd.setColor(number.getColor());
+                                gd.setCornerRadius(1);
+                                gd.setStroke(2, COLOR_BUTTON_BORDER);
+                                button.setBackground(gd);
+                            }
+                            else {
+                                button.setBackgroundColor(number.getColor());
+                            }
+
+                            //Set layout param filling
+                            if (col < configSize - greenCount) {
+                                LinearLayout.LayoutParams bparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1f);
+                                button.setLayoutParams(bparams);
+                            }
+                            else {
+                                LinearLayout.LayoutParams bparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, NUMBER_OF_COLUMNS / (float) greenCount);
+                                button.setLayoutParams(bparams);
+                            }
+
+                            //button.setTextSize(TypedValue.COMPLEX_UNIT_PX, button.getHeight() / 2);
+
+                            //Add click listener
                             button.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -82,10 +113,9 @@ public class SelectNumberActivity extends AppCompatActivity {
                                 }
                             });
 
+                            //Add button to row and buttons
                             row.addView(button);
-
-                            TableRow.LayoutParams bparams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT, 1f);
-                            button.setLayoutParams(bparams);
+                            buttons.add(button);
                         }
 
                         count++;
@@ -94,6 +124,18 @@ public class SelectNumberActivity extends AppCompatActivity {
 
                     layout.addView(row);
                 }
+
+                //Add layout change listener so that we can scale button text size to fit the button (then remove listener)
+                final LinearLayout tlayout = layout;
+                layout.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+                    @Override
+                    public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                        for (Button b : buttons) {
+                            b.setTextSize(TypedValue.COMPLEX_UNIT_PX, b.getHeight() * SCALE_BUTTON_TEXT);
+                        }
+                        tlayout.removeOnLayoutChangeListener(this);
+                    }
+                });
             }
             else {
                 finishActivityWithNumberSelection(null);
