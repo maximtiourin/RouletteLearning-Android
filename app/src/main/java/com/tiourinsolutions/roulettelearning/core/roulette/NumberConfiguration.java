@@ -76,10 +76,18 @@ public abstract class NumberConfiguration {
     public static NumberConfiguration EUROPEAN = new EuropeanConfiguration();
     protected ArrayList<Number> numbers;
     protected ArrayList<Number> sortedNumbers;
+    private int greenCount;
+    private int redCount;
+    private int blackCount;
 
     protected NumberConfiguration() {
         numbers = new ArrayList<Number>();
         sortedNumbers = new ArrayList<Number>();
+
+        greenCount = -1;
+        redCount = -1;
+        blackCount = -1;
+
 
         initNumbers();
 
@@ -126,33 +134,51 @@ public abstract class NumberConfiguration {
     }
 
     public int getConfigGreenCount() {
-        int c = 0;
-        for (Number n : numbers) {
-            if (n.getColorId() == Number.NumberColor.Green.getId()) {
-                c++;
+        //Lazy eval
+        if (greenCount < 0) {
+            int c = 0;
+            for (Number n : numbers) {
+                if (n.getColorId() == Number.NumberColor.Green.getId()) {
+                    c++;
+                }
             }
+            return c;
         }
-        return c;
+        else {
+            return greenCount;
+        }
     }
 
     public int getConfigRedCount() {
-        int c = 0;
-        for (Number n : numbers) {
-            if (n.getColorId() == Number.NumberColor.Red.getId()) {
-                c++;
+        //Lazy eval
+        if (redCount < 0) {
+            int c = 0;
+            for (Number n : numbers) {
+                if (n.getColorId() == Number.NumberColor.Red.getId()) {
+                    c++;
+                }
             }
+            return c;
         }
-        return c;
+        else {
+            return redCount;
+        }
     }
 
     public int getConfigBlackCount() {
-        int c = 0;
-        for (Number n : numbers) {
-            if (n.getColorId() == Number.NumberColor.Black.getId()) {
-                c++;
+        //Lazy eval
+        if (blackCount < 0) {
+            int c = 0;
+            for (Number n : numbers) {
+                if (n.getColorId() == Number.NumberColor.Black.getId()) {
+                    c++;
+                }
             }
+            return c;
         }
-        return c;
+        else {
+            return blackCount;
+        }
     }
 
     public List<Number> getNumberList() {
